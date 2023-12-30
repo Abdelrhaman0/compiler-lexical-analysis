@@ -45,7 +45,7 @@ class Lexer {
         if (position < input.length()) {
             return input.charAt(position);
         }
-        return '\0'; // End of input
+        return '\0';
     }
 
     private char consume() {
@@ -77,7 +77,6 @@ class Lexer {
             char currentChar = peek();
 
             if (Character.isDigit(currentChar) || currentChar == '.') {
-                // Tokenize numbers (integers and floats)
                 StringBuilder numberLexeme = new StringBuilder();
                 boolean isFloat = false;
                 while (Character.isDigit(peek()) || peek() == '.') {
@@ -93,7 +92,6 @@ class Lexer {
                 }
                 addToken(isFloat ? Token.TokenType.FLOAT : Token.TokenType.INTEGER, numberLexeme.toString());
             } else if (Character.isLetter(currentChar)) {
-                // Tokenize identifiers
                 StringBuilder identifierLexeme = new StringBuilder();
                 while (Character.isLetterOrDigit(peek())) {
                     identifierLexeme.append(consume());
@@ -123,13 +121,11 @@ class Lexer {
                         addToken(Token.TokenType.RPAREN, String.valueOf(consume()));
                         break;
                     case '\n':
-                        // Handle newline character (increment line, reset column)
                         consume();
                         line++;
                         column = 1;
                         break;
                     default:
-                        // Invalid character encountered
                         reportError("Invalid character: " + currentChar);
                         consume();
                 }
@@ -138,7 +134,6 @@ class Lexer {
             skipWhitespace();
         }
 
-        // Add EOF token to signify the end of input
         tokens.add(new Token(Token.TokenType.EOF, ""));
         return tokens;
     }
